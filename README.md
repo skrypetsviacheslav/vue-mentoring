@@ -35,5 +35,10 @@ npm run lint
 npm run storybook:serve
 ```
 
+### Deploy Demo to [GitHub Pages](https://skrypetsviacheslav.github.io/vue-mentoring/)
+```
+npm run deploy-demo
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
