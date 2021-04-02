@@ -34,18 +34,7 @@ describe("SearchBar.vue", () => {
     const testInput = "some value";
     const wrapper = factory();
     const SearchBar = wrapper.find(".search-bar");
-    const SearchInput = SearchBar.find(".form-group input[type='text']");
-
-    await SearchInput.setValue(testInput);
-
-    expect(wrapper.vm.searchText).toEqual(testInput);
-  });
-
-  it("reflect to user input", async () => {
-    const testInput = "some value";
-    const wrapper = factory();
-    const SearchBar = wrapper.find(".search-bar");
-    const SearchInput = SearchBar.find(".form-group input[type='text']");
+    const SearchInput = SearchBar.find(".input-group  input[type='text']");
 
     await SearchInput.setValue(testInput);
 
@@ -65,11 +54,28 @@ describe("SearchBar.vue", () => {
     const testInput = "some value";
     const wrapper = factory();
     const SearchBar = wrapper.find(".search-bar");
-    const SearchInput = SearchBar.find(".form-group input[type='text']");
-    const SearchButton = SearchBar.find(".form-group button");
+    const SearchInput = SearchBar.find(".input-group  input[type='text']");
+    const SearchButton = SearchBar.find(".input-group  button");
 
     await SearchInput.setValue(testInput);
     await SearchButton.trigger("click");
+
+    expect(wrapper.emitted("button-clicked")).toBeTruthy();
+    expect(wrapper.emitted("button-clicked").length).toBe(1);
+    expect(wrapper.emitted("button-clicked")[0]).toEqual([
+      testInput,
+      firstOption
+    ]);
+  });
+
+  it("emit button-clicked event with user input and selected option when enter button pressed", async () => {
+    const testInput = "some value";
+    const wrapper = factory();
+    const SearchBar = wrapper.find(".search-bar");
+    const SearchInput = SearchBar.find(".input-group  input[type='text']");
+
+    await SearchInput.setValue(testInput);
+    await SearchInput.trigger("keydown.enter");
 
     expect(wrapper.emitted("button-clicked")).toBeTruthy();
     expect(wrapper.emitted("button-clicked").length).toBe(1);

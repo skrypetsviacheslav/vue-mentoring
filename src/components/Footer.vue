@@ -1,8 +1,6 @@
 <template>
-  <div class="navbar">
-    <div class="container d-flex justify-content-between">
-      <slot></slot>
-    </div>
+  <div class="container-fluid p-1">
+    <slot></slot>
   </div>
 </template>
 
@@ -13,7 +11,7 @@ export default {
 </script>
 
 <style scoped>
-.navbar {
+.container-fluid {
   background-color: #424242;
 }
 </style>

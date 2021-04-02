@@ -1,7 +1,9 @@
 import FilmCardGallery from "../components/FilmCardGallery.vue";
+import {action} from "@storybook/addon-actions";
 
 export default {
   title: "FilmCardGallery",
+  excludeStories: /.*Data$/,
   parameters: {
     backgrounds: {
       default: "dark",
@@ -14,10 +16,15 @@ export default {
   }
 };
 
+export const actionsData = {
+  onCardClicked: action("card-clicked")
+};
+
 const Template = (args, { argTypes }) => ({
   components: { FilmCardGallery },
   props: Object.keys(argTypes),
-  template: `<FilmCardGallery v-bind="$props"/>`
+  methods: actionsData,
+  template: `<FilmCardGallery v-bind="$props" @card-clicked='onCardClicked'/>`
 });
 
 export const Empty = Template.bind({});
@@ -26,28 +33,32 @@ export const With_Cards = Template.bind({});
 With_Cards.args = {
   cards: [
     {
-      imageUrl: "https://via.placeholder.com/300x500.png",
+      id: 1,
+      poster_path: "https://via.placeholder.com/300x500.png",
       title: "cardTitle1",
-      releaseDate: "2000",
-      genre: "Action"
+      release_date: "2000",
+      genres: ["Action", "Drama"]
     },
     {
-      imageUrl: "https://via.placeholder.com/300x500.png",
+      id: 2,
+      poster_path: "https://via.placeholder.com/300x500.png",
       title: "cardTitle2",
-      releaseDate: "2007",
-      genre: "Drama"
+      release_date: "2007",
+      genres: ["Drama", "Action"]
     },
     {
-      imageUrl: "https://via.placeholder.com/300x500.png",
+      id: 3,
+      poster_path: "https://via.placeholder.com/300x500.png",
       title: "cardTitle3",
-      releaseDate: "2010",
-      genre: "Test genre"
+      release_date: "2010",
+      genres: ["Test genre"]
     },
     {
-      imageUrl: "https://via.placeholder.com/300x500.png",
+      id: 4,
+      poster_path: "https://via.placeholder.com/300x500.png",
       title: "cardTitle4",
-      releaseDate: "2007",
-      genre: "Comedy"
+      release_date: "2007",
+      genres: ["Comedy"]
     }
   ]
 };

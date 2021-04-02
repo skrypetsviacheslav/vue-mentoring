@@ -17,6 +17,6 @@ describe("Footer.vue", () => {
       }
     });
 
-    expect(wrapper.find(".navbar .container").html()).toContain(slotContent);
+    expect(wrapper.find(".container-fluid").html()).toContain(slotContent);
   });
 });
