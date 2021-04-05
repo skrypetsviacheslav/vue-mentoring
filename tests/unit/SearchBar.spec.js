@@ -50,7 +50,7 @@ describe("SearchBar.vue", () => {
     expect(wrapper.vm.selectedOption).toEqual(secondOption);
   });
 
-  it("emit button-clicked event with user input and selected option when button cicked", async () => {
+  it("emit search-submitted event with user input and selected option when button cicked", async () => {
     const testInput = "some value";
     const wrapper = factory();
     const SearchBar = wrapper.find(".search-bar");
@@ -60,15 +60,15 @@ describe("SearchBar.vue", () => {
     await SearchInput.setValue(testInput);
     await SearchButton.trigger("click");
 
-    expect(wrapper.emitted("button-clicked")).toBeTruthy();
-    expect(wrapper.emitted("button-clicked").length).toBe(1);
-    expect(wrapper.emitted("button-clicked")[0]).toEqual([
+    expect(wrapper.emitted("search-submitted")).toBeTruthy();
+    expect(wrapper.emitted("search-submitted").length).toBe(1);
+    expect(wrapper.emitted("search-submitted")[0]).toEqual([
       testInput,
       firstOption
     ]);
   });
 
-  it("emit button-clicked event with user input and selected option when enter button pressed", async () => {
+  it("emit search-submitted event with user input and selected option when enter button pressed", async () => {
     const testInput = "some value";
     const wrapper = factory();
     const SearchBar = wrapper.find(".search-bar");
@@ -77,9 +77,9 @@ describe("SearchBar.vue", () => {
     await SearchInput.setValue(testInput);
     await SearchInput.trigger("keydown.enter");
 
-    expect(wrapper.emitted("button-clicked")).toBeTruthy();
-    expect(wrapper.emitted("button-clicked").length).toBe(1);
-    expect(wrapper.emitted("button-clicked")[0]).toEqual([
+    expect(wrapper.emitted("search-submitted")).toBeTruthy();
+    expect(wrapper.emitted("search-submitted").length).toBe(1);
+    expect(wrapper.emitted("search-submitted")[0]).toEqual([
       testInput,
       firstOption
     ]);

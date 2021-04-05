@@ -23,7 +23,7 @@
           </div>
           <div class="row p-1">
             <div class="pr-3">
-              <span class="spec">{{ releaseDate }}</span>
+              <span class="spec">{{ releaseYear }}</span>
               <span class="card-text small"> year</span>
             </div>
             <div v-if="duration" class="pl-3">
@@ -78,6 +78,9 @@ export default {
   computed: {
     formattedGenres() {
       return this.genres.join(" & ");
+    },
+    releaseYear() {
+      return this.releaseDate.substring(0, 4);
     }
   }
 };

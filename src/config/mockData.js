@@ -1,5 +1,5 @@
-export const mockData = {
-  movies: [
+export default {
+  MOVIES: [
     {
       id: 447365,
       title: "Guardians of the Galaxy Vol. 3",

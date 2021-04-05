@@ -23,5 +23,5 @@ Kill_Bill_vol2.args = {
     "https://images-na.ssl-images-amazon.com/images/I/51UQNTy4GqL._AC_.jpg",
   title: "Kill Bill: Vol 2",
   genres: ["Oscar winning Movie", "Action"],
-  releaseDate: "1994"
+  releaseDate: "1994-05-01"
 };

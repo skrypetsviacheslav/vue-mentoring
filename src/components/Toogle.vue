@@ -8,7 +8,7 @@
         <input
           type="radio"
           name="options"
-          @change="$emit('value-switched', $event.target.value)"
+          @change="onValueSwitched($event.target.value)"
           :value="firstOption"
           checked
         />
@@ -18,7 +18,7 @@
         <input
           type="radio"
           name="options"
-          @change="$emit('value-switched', $event.target.value)"
+          @change="onValueSwitched($event.target.value)"
           :value="secondOption"
         />
         {{ secondOption }}
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { EVENTS } from "../config/constants";
+
 export default {
   name: "Toogle",
   props: {
@@ -42,6 +44,12 @@ export default {
     secondOption: {
       type: String,
       require: true
+    }
+  },
+  methods: {
+    onValueSwitched(newValue) {
+      console.log("onValueSwitched");
+      this.$emit(EVENTS.TOOGLE_VALUE_SWITCHED, newValue);
     }
   }
 };

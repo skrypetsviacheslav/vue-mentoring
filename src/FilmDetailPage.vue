@@ -20,7 +20,7 @@
               <FilmDetailCard
                 :imageUrl="selectedMovie.poster_path"
                 :title="selectedMovie.title"
-                :releaseDate="selectedMovie.release_date.substring(0, 4)"
+                :releaseDate="selectedMovie.release_date"
                 :duration="selectedMovie.runtime"
                 :genres="selectedMovie.genres"
                 :description="selectedMovie.overview"
@@ -35,7 +35,7 @@
         <div class="row">
           <div class="col pl-5">
             <span class="text-white pl-5">
-              Films by {{ selectedMovie.genres[0] }} genre
+              {{ filmsByMsg }}
             </span>
           </div>
         </div>
@@ -44,7 +44,7 @@
       <FilmCardGallery
         class="gallery__bg-dark p-4"
         :cards="movies"
-        @card-clicked="onFilmCardClick"
+        @film-gallery-card-clicked="onFilmCardClick"
       />
     </BaseLayout>
   </div>
@@ -57,7 +57,8 @@ import FilmDetailCard from "./components/FilmDetailCard";
 import FilmCardGallery from "./components/FilmCardGallery";
 import BaseLayout from "./components/layout/BaseLayout";
 
-import { mockData } from "./config/mockData";
+import MOCK_DATA from "./config/mockData";
+import I18N from "./config/i18n/index";
 
 export default {
   name: "FilmDetailPage",
@@ -70,10 +71,17 @@ export default {
   },
   data: () => {
     return {
-      movies: mockData.movies,
+      filmsByPrefix: I18N["EN"].DETAIL_PAGE_FILMS_BY_PREFIX_MSG,
+      filmsBySuffix: I18N["EN"].DETAIL_PAGE_FILMS_BY_SUFFIX_MSG,
+      movies: MOCK_DATA.MOVIES,
       selectedMovie:
-        mockData.movies[Math.floor(Math.random() * mockData.movies.length)]
+        MOCK_DATA.MOVIES[Math.floor(Math.random() * MOCK_DATA.MOVIES.length)]
     };
+  },
+  computed: {
+    filmsByMsg() {
+      return `${this.filmsByPrefix} ${this.selectedMovie.genres[0]} ${this.filmsBySuffix}`;
+    }
   },
   methods: {
     onFilmCardClick(movieID) {

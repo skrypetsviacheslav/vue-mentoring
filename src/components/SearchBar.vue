@@ -6,15 +6,15 @@
         v-model="searchText"
         class="form-control text-white bg-dark border-dark"
         placeholder="Search"
-        @keydown.enter="$emit('button-clicked', searchText, selectedOption)"
+        @keydown.enter="searchSubmitted"
       />
       <button
         type="button"
         class="btn input-group-btn "
-        @click="$emit('button-clicked', searchText, selectedOption)"
+        @click="searchSubmitted"
       >
         <span class="m-4">
-          Search
+          {{ searchButtonLabel }}
         </span>
       </button>
     </div>
@@ -30,10 +30,14 @@
 <script>
 import Toogle from "./Toogle.vue";
 
+import { EVENTS } from "../config/constants";
+import I18N from "../config/i18n/index";
+
 export default {
   name: "SearchBar",
   data() {
     return {
+      searchButtonLabel: I18N["EN"].SEARCH_BAR_BUTTON_LABEL,
       selectedOption: this.firstOption,
       searchText: ""
     };
@@ -52,6 +56,14 @@ export default {
   methods: {
     seachByOptionChanged(newValue) {
       this.selectedOption = newValue;
+    },
+    searchSubmitted() {
+      console.log("onSearchSubmitted");
+      this.$emit(
+        EVENTS.SEARCH_BAR_SEARCH_SUBMITTED,
+        this.searchText,
+        this.selectedOption
+      );
     }
   }
 };

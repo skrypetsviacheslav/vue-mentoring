@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="$emit('card-clicked')">
+  <div class="card" @click="onCardClick">
     <img class="card-img-top" :src="imageUrl" />
     <div class="card-body">
       <div class="row">
@@ -8,7 +8,7 @@
         </div>
         <div class="col">
           <span class="card-title border rounded p-1">
-            {{ releaseDate }}
+            {{ releaseYear }}
           </span>
         </div>
       </div>
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { EVENTS } from "../config/constants";
+
 export default {
   name: "FilmCard",
   props: {
@@ -47,6 +49,15 @@ export default {
   computed: {
     formattedGenres() {
       return this.genres.join(" & ");
+    },
+    releaseYear() {
+      return this.releaseDate.substring(0, 4);
+    }
+  },
+  methods: {
+    onCardClick() {
+      console.log("onCardClick");
+      this.$emit(EVENTS.FILM_CARD_CLICKED);
     }
   }
 };

@@ -55,7 +55,7 @@ describe("FilmCardGallery.vue", () => {
     expect(cardsWrapper.length).toBe(3);
   });
 
-  it("emit card-clicked event when card clicked", async () => {
+  it("emit film-gallery-card-clicked event when card clicked", async () => {
     const wrapper = mount(FilmCardGallery, {
       propsData: {
         cards: cards
@@ -67,8 +67,8 @@ describe("FilmCardGallery.vue", () => {
 
     await firstCard.trigger("click");
 
-    expect(wrapper.emitted("card-clicked")).toBeTruthy();
-    expect(wrapper.emitted("card-clicked").length).toBe(1);
-    expect(wrapper.emitted("card-clicked")[0]).toEqual([1]);
+    expect(wrapper.emitted("film-gallery-card-clicked")).toBeTruthy();
+    expect(wrapper.emitted("film-gallery-card-clicked").length).toBe(1);
+    expect(wrapper.emitted("film-gallery-card-clicked")[0]).toEqual([1]);
   });
 });
