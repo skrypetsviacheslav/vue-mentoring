@@ -31,4 +31,4 @@ export const By_Title_and_Genre = Template.bind({});
 By_Title_and_Genre.args = {
   firstOption: "TITLE",
   secondOption: "GENRE"
-}
+};
