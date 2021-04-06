@@ -1,18 +1,21 @@
 <template>
   <div class="search-bar">
-    <div class="form-group form-inline">
+    <div class="input-group input-group-lg">
       <input
         type="text"
         v-model="searchText"
         class="form-control text-white bg-dark border-dark"
         placeholder="Search"
+        @keydown.enter="searchSubmitted"
       />
       <button
         type="button"
-        class="m-3 btn"
-        @click="$emit('button-clicked', searchText, selectedOption)"
+        class="btn input-group-btn "
+        @click="searchSubmitted"
       >
-        Search
+        <span class="m-4">
+          {{ searchButtonLabel }}
+        </span>
       </button>
     </div>
     <Toogle
@@ -27,10 +30,14 @@
 <script>
 import Toogle from "./Toogle.vue";
 
+import { EVENTS } from "../config/constants";
+import I18N from "../config/i18n/index";
+
 export default {
   name: "SearchBar",
   data() {
     return {
+      searchButtonLabel: I18N["EN"].SEARCH_BAR_BUTTON_LABEL,
       selectedOption: this.firstOption,
       searchText: ""
     };
@@ -49,6 +56,14 @@ export default {
   methods: {
     seachByOptionChanged(newValue) {
       this.selectedOption = newValue;
+    },
+    searchSubmitted() {
+      console.log("onSearchSubmitted");
+      this.$emit(
+        EVENTS.SEARCH_BAR_SEARCH_SUBMITTED,
+        this.searchText,
+        this.selectedOption
+      );
     }
   }
 };

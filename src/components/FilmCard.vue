@@ -1,16 +1,22 @@
 <template>
-  <div class="card">
+  <div class="card" @click="onCardClick">
     <img class="card-img-top" :src="imageUrl" />
     <div class="card-body">
       <div class="row">
         <div class="col-9">
           <h6 class="card-title">{{ title }}</h6>
         </div>
-        <p class="col card-title border rounded">{{ releaseDate }}</p>
+        <div class="col">
+          <span class="card-title border rounded p-1">
+            {{ releaseYear }}
+          </span>
+        </div>
       </div>
       <div class="row">
-        <div class="col-9">
-          <p class="card-text">{{ genre }}</p>
+        <div class="col">
+          <p class="card-text">
+            <small>{{ formattedGenres }}</small>
+          </p>
         </div>
       </div>
     </div>
@@ -18,6 +24,8 @@
 </template>
 
 <script>
+import { EVENTS } from "../config/constants";
+
 export default {
   name: "FilmCard",
   props: {
@@ -33,9 +41,23 @@ export default {
       type: String,
       require: true
     },
-    genre: {
-      type: String,
+    genres: {
+      type: Array,
       require: true
+    }
+  },
+  computed: {
+    formattedGenres() {
+      return this.genres.join(" & ");
+    },
+    releaseYear() {
+      return this.releaseDate.substring(0, 4);
+    }
+  },
+  methods: {
+    onCardClick() {
+      console.log("onCardClick");
+      this.$emit(EVENTS.FILM_CARD_CLICKED);
     }
   }
 };
@@ -43,7 +65,8 @@ export default {
 
 <style scoped>
 .card {
-  width: 18rem;
+  cursor: pointer;
+  max-width: 32rem;
   background-color: #232323;
 }
 .card-body .card-text {

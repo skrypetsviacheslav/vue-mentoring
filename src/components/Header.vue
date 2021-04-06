@@ -1,8 +1,6 @@
 <template>
-  <div class="navbar navbar-dark bg-dark ">
-    <div class="container d-flex justify-content-between">
-      <slot></slot>
-    </div>
+  <div class="container-fluid bg-image">
+    <slot></slot>
   </div>
 </template>
 
@@ -12,4 +10,14 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.bg-image {
+  background-image: url("/posters.jpg");
+
+  height: 100%;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>

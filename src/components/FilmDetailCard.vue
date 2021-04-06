@@ -1,5 +1,5 @@
 <template>
-  <div class="card" style="max-width: 540px;">
+  <div class="card">
     <div class="row">
       <div class="col-4">
         <img :src="imageUrl" class="card-img" />
@@ -17,14 +17,16 @@
             </div>
           </div>
           <div class="row p-1">
-            <p class="card-text small">{{ genre }}</p>
+            <p class="card-text">
+              <small>{{ formattedGenres }}</small>
+            </p>
           </div>
           <div class="row p-1">
             <div class="pr-3">
-              <span class="spec">{{ releaseDate }}</span>
+              <span class="spec">{{ releaseYear }}</span>
               <span class="card-text small"> year</span>
             </div>
-            <div class="pl-3">
+            <div v-if="duration" class="pl-3">
               <span class="spec">{{ duration }} </span>
               <span class="card-text small">min</span>
             </div>
@@ -53,15 +55,15 @@ export default {
       require: true
     },
     releaseDate: {
-      type: Number,
+      type: String,
       require: true
     },
     duration: {
       type: Number,
       require: true
     },
-    genre: {
-      type: String,
+    genres: {
+      type: Array,
       require: true
     },
     description: {
@@ -71,6 +73,14 @@ export default {
     rate: {
       type: Number,
       require: true
+    }
+  },
+  computed: {
+    formattedGenres() {
+      return this.genres.join(" & ");
+    },
+    releaseYear() {
+      return this.releaseDate.substring(0, 4);
     }
   }
 };
