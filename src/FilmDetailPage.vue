@@ -57,7 +57,6 @@ import FilmDetailCard from "./components/FilmDetailCard";
 import FilmCardGallery from "./components/FilmCardGallery";
 import BaseLayout from "./components/layout/BaseLayout";
 
-import MOCK_DATA from "./config/mockData";
 import I18N from "./config/i18n/index";
 
 export default {
@@ -73,21 +72,28 @@ export default {
     return {
       filmsByPrefix: I18N["EN"].DETAIL_PAGE_FILMS_BY_PREFIX_MSG,
       filmsBySuffix: I18N["EN"].DETAIL_PAGE_FILMS_BY_SUFFIX_MSG,
-      movies: MOCK_DATA.MOVIES,
-      selectedMovie:
-        MOCK_DATA.MOVIES[Math.floor(Math.random() * MOCK_DATA.MOVIES.length)]
+      selectedMovie: undefined
     };
   },
   computed: {
+    movies() {
+      return this.$store.state.movies;
+    },
     filmsByMsg() {
       return `${this.filmsByPrefix} ${this.selectedMovie.genres[0]} ${this.filmsBySuffix}`;
     }
   },
   methods: {
     onFilmCardClick(movieID) {
-      console.log("onSearchBarButtonClicked id", movieID);
-      this.selectedMovie = this.movies.find(movie => movie.id === movieID);
+      console.log("FilmDetailPage#onFilmCardClick id", movieID);
+      this.selectedMovie = this.$store.getters.findMovie(movieID);
     }
+  },
+
+  created() {
+    this.selectedMovie = this.movies[
+      Math.floor(Math.random() * this.movies.length)
+    ];
   }
 };
 </script>

@@ -29,16 +29,16 @@
         <div class="row align-items-center h-100">
           <div class="col">
             <span class="text-white pl-5">
-              {{ movies.length }} {{ movieFoundLabel }}
+              {{ sortedMovies.length }} {{ movieFoundLabel }}
             </span>
           </div>
           <div class="col">
-            <Toogle
+            <Toggle
               class="float-right"
               :label="sortByLabel"
               :firstOption="sortByFirstOptionText"
               :secondOption="sortBySecondOptionText"
-              @value-switched="onSortByToogleValueSwitched"
+              @value-switched="onSortByToggleValueSwitched"
             />
           </div>
         </div>
@@ -58,11 +58,10 @@ import AppNameLabel from "./components/AppNameLabel";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import FilmCardGallery from "./components/FilmCardGallery";
-import Toogle from "./components/Toogle";
+import Toggle from "./components/Toggle";
 import BaseLayout from "./components/layout/BaseLayout";
 
 import { publicPath } from "../vue.config";
-import MOCK_DATA from "./config/mockData";
 import I18N from "./config/i18n/index";
 
 export default {
@@ -72,7 +71,7 @@ export default {
     AppNameLabel,
     Header,
     SearchBar,
-    Toogle,
+    Toggle,
     FilmCardGallery
   },
   data: () => {
@@ -85,42 +84,32 @@ export default {
       sortBySelectedOption: I18N["EN"].SORT_BY_FIRST_OPTION_TEXT,
 
       searchByFirstOptionText: I18N["EN"].SEARCH_BY_FIRST_OPTION_TEXT,
-      searchBySecondOptionText: I18N["EN"].SEARCH_BY_SECOND_OPTION_TEXT,
-
-      movies: MOCK_DATA.MOVIES
+      searchBySecondOptionText: I18N["EN"].SEARCH_BY_SECOND_OPTION_TEXT
     };
   },
   computed: {
     sortedMovies() {
       if (this.sortBySelectedOption === this.sortByFirstOptionText) {
-        return this.sortedMoviesByReleaseDate;
+        return this.$store.getters.moviesSortedByReleaseDate;
       } else {
-        return this.sortedMoviesByRating;
+        return this.$store.getters.moviesSortedByRating;
       }
-    },
-    sortedMoviesByReleaseDate() {
-      const sortedMovies = [...this.movies];
-      sortedMovies.sort(
-        (a, b) => new Date(b.release_date) - new Date(a.release_date)
-      );
-      return sortedMovies;
-    },
-    sortedMoviesByRating() {
-      const sortedMovies = [...this.movies];
-      sortedMovies.sort((a, b) => b.vote_count - a.vote_count);
-      return sortedMovies;
     }
   },
   methods: {
-    onSortByToogleValueSwitched(sortByValue) {
-      console.log("onSortByToogleValueSwitched", sortByValue);
+    onSortByToggleValueSwitched(sortByValue) {
+      console.log("MainPage#onSortByToggleValueSwitched", sortByValue);
       this.sortBySelectedOption = sortByValue;
     },
     onSearchBarButtonClicked(searchText, searchByOption) {
-      console.log("onSearchBarButtonClicked", searchText, searchByOption);
+      console.log(
+        "MainPage#onSearchBarButtonClicked",
+        searchText,
+        searchByOption
+      );
     },
     onFilmCardClick(movieID) {
-      console.log("onSearchBarButtonClicked id", movieID);
+      console.log("MainPage#onFilmCardClick id", movieID);
       window.location.href = publicPath + "details";
     }
   }

@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import SearchBar from "../../src/components/SearchBar.vue";
-import Toogle from "../../src/components/Toogle.vue";
+import Toggle from "../../src/components/Toggle.vue";
 
 const firstOption = "Test first option";
 const secondOption = "Test second option";
@@ -25,9 +25,9 @@ describe("SearchBar.vue", () => {
     const wrapper = factory();
 
     const SearchBar = wrapper.find(".search-bar");
-    const Toogle = SearchBar.find(".toogle");
-    expect(Toogle.text()).toContain(firstOption);
-    expect(Toogle.text()).toContain(secondOption);
+    const Toggle = SearchBar.find(".toggle");
+    expect(Toggle.text()).toContain(firstOption);
+    expect(Toggle.text()).toContain(secondOption);
   });
 
   it("reflect to user input", async () => {
@@ -41,11 +41,11 @@ describe("SearchBar.vue", () => {
     expect(wrapper.vm.searchText).toEqual(testInput);
   });
 
-  it("reflect to toogle change", () => {
+  it("reflect to toggle change", () => {
     const wrapper = factory();
-    const ToogleWrapper = wrapper.findComponent(Toogle);
+    const ToggleWrapper = wrapper.findComponent(Toggle);
 
-    ToogleWrapper.vm.$emit("value-switched", secondOption);
+    ToggleWrapper.vm.$emit("value-switched", secondOption);
 
     expect(wrapper.vm.selectedOption).toEqual(secondOption);
   });

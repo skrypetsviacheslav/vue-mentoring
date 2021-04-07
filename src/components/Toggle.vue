@@ -1,5 +1,5 @@
 <template>
-  <div class="toogle">
+  <div class="toggle">
     <label class="label">
       {{ label }}
     </label>
@@ -31,7 +31,7 @@
 import { EVENTS } from "../config/constants";
 
 export default {
-  name: "Toogle",
+  name: "Toggle",
   props: {
     label: {
       type: String,
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     onValueSwitched(newValue) {
-      console.log("onValueSwitched");
+      console.log("Toggle#onValueSwitched");
       this.$emit(EVENTS.TOOGLE_VALUE_SWITCHED, newValue);
     }
   }
