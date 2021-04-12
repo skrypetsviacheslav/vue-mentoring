@@ -63,6 +63,7 @@ import BaseLayout from "./components/layout/BaseLayout";
 
 import { publicPath } from "../vue.config";
 import I18N from "./config/i18n/index";
+import { MUTATIONS } from "./config/constants";
 
 export default {
   name: "MainPage",
@@ -90,9 +91,9 @@ export default {
   computed: {
     sortedMovies() {
       if (this.sortBySelectedOption === this.sortByFirstOptionText) {
-        return this.$store.getters.moviesSortedByReleaseDate;
+        return this.$store.getters.searchingMoviesSortedByReleaseDate;
       } else {
-        return this.$store.getters.moviesSortedByRating;
+        return this.$store.getters.searchingMoviesSortedByRating;
       }
     }
   },
@@ -107,9 +108,17 @@ export default {
         searchText,
         searchByOption
       );
+
+      if (searchByOption === I18N["EN"].SEARCH_BY_FIRST_OPTION_TEXT) {
+        this.$store.commit(MUTATIONS.FILTER_MOVIES_BY_TITLE, searchText.trim());
+      } else {
+        this.$store.commit(MUTATIONS.FILTER_MOVIES_BY_GENRE, searchText.trim());
+      }
     },
     onFilmCardClick(movieID) {
       console.log("MainPage#onFilmCardClick id", movieID);
+      const newSelectedMovie = this.$store.getters.findMovie(movieID);
+      this.$store.commit(MUTATIONS.SET_SELECTED_MOVIE, newSelectedMovie);
       window.location.href = publicPath + "details";
     }
   }

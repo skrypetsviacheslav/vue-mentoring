@@ -49,7 +49,7 @@ export default {
   methods: {
     onValueSwitched(newValue) {
       console.log("Toggle#onValueSwitched");
-      this.$emit(EVENTS.TOOGLE_VALUE_SWITCHED, newValue);
+      this.$emit(EVENTS.TOGGLE_VALUE_SWITCHED, newValue);
     }
   }
 };
