@@ -18,17 +18,17 @@
         </span>
       </button>
     </div>
-    <Toogle
-      label="SEARCH BY"
+    <Toggle
+      :label="searchByLabel"
       :firstOption="firstOption"
       :secondOption="secondOption"
-      @value-switched="seachByOptionChanged"
+      @value-switched="searchByOptionChanged"
     />
   </div>
 </template>
 
 <script>
-import Toogle from "./Toogle.vue";
+import Toggle from "./Toggle.vue";
 
 import { EVENTS } from "../config/constants";
 import I18N from "../config/i18n/index";
@@ -37,12 +37,13 @@ export default {
   name: "SearchBar",
   data() {
     return {
+      searchByLabel: I18N["EN"].SEARCH_BY_LABEL,
       searchButtonLabel: I18N["EN"].SEARCH_BAR_BUTTON_LABEL,
       selectedOption: this.firstOption,
       searchText: ""
     };
   },
-  components: { Toogle },
+  components: { Toggle },
   props: {
     firstOption: {
       type: String,
@@ -54,11 +55,11 @@ export default {
     }
   },
   methods: {
-    seachByOptionChanged(newValue) {
+    searchByOptionChanged(newValue) {
       this.selectedOption = newValue;
     },
     searchSubmitted() {
-      console.log("onSearchSubmitted");
+      console.log("SearchBar#onSearchSubmitted");
       this.$emit(
         EVENTS.SEARCH_BAR_SEARCH_SUBMITTED,
         this.searchText,

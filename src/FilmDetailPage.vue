@@ -57,8 +57,8 @@ import FilmDetailCard from "./components/FilmDetailCard";
 import FilmCardGallery from "./components/FilmCardGallery";
 import BaseLayout from "./components/layout/BaseLayout";
 
-import MOCK_DATA from "./config/mockData";
 import I18N from "./config/i18n/index";
+import { MUTATIONS } from "./config/constants";
 
 export default {
   name: "FilmDetailPage",
@@ -72,21 +72,30 @@ export default {
   data: () => {
     return {
       filmsByPrefix: I18N["EN"].DETAIL_PAGE_FILMS_BY_PREFIX_MSG,
-      filmsBySuffix: I18N["EN"].DETAIL_PAGE_FILMS_BY_SUFFIX_MSG,
-      movies: MOCK_DATA.MOVIES,
-      selectedMovie:
-        MOCK_DATA.MOVIES[Math.floor(Math.random() * MOCK_DATA.MOVIES.length)]
+      filmsBySuffix: I18N["EN"].DETAIL_PAGE_FILMS_BY_SUFFIX_MSG
     };
   },
   computed: {
+    selectedMovie() {
+      return this.$store.state.selectedMovie;
+    },
+    selectedMovieMainGenre() {
+      return this.selectedMovie.genres[0];
+    },
+    movies() {
+      return this.$store.getters
+        .moviesFilteredByGenre(this.selectedMovieMainGenre)
+        .filter(movie => movie.id !== this.selectedMovie.id);
+    },
     filmsByMsg() {
-      return `${this.filmsByPrefix} ${this.selectedMovie.genres[0]} ${this.filmsBySuffix}`;
+      return `${this.filmsByPrefix} ${this.selectedMovieMainGenre} ${this.filmsBySuffix}`;
     }
   },
   methods: {
     onFilmCardClick(movieID) {
-      console.log("onSearchBarButtonClicked id", movieID);
-      this.selectedMovie = this.movies.find(movie => movie.id === movieID);
+      console.log("FilmDetailPage#onFilmCardClick id", movieID);
+      const newSelectedMovie = this.$store.getters.findMovie(movieID);
+      this.$store.commit(MUTATIONS.SET_SELECTED_MOVIE, newSelectedMovie);
     }
   }
 };

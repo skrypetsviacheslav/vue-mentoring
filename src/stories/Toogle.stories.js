@@ -1,8 +1,8 @@
-import Toogle from "../components/Toogle.vue";
+import Toggle from "../components/Toggle.vue";
 import { action } from "@storybook/addon-actions";
 
 export default {
-  title: "Toogle",
+  title: "Toggle",
   excludeStories: /.*Data$/,
   parameters: {
     backgrounds: {
@@ -21,10 +21,10 @@ export const actionsData = {
 };
 
 const Template = (args, { argTypes }) => ({
-  components: { Toogle },
+  components: { Toggle },
   props: Object.keys(argTypes),
   methods: actionsData,
-  template: `<Toogle v-bind="$props" @value-switched='onValueSwitch'/>`
+  template: `<Toggle v-bind="$props" @value-switched='onValueSwitch'/>`
 });
 
 export const Default = Template.bind({});

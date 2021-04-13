@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     onCardClick() {
-      console.log("onCardClick");
+      console.log("FilmCard#onCardClick");
       this.$emit(EVENTS.FILM_CARD_CLICKED);
     }
   }

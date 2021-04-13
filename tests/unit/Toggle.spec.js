@@ -1,11 +1,11 @@
 import { mount } from "@vue/test-utils";
-import Toogle from "../../src/components/Toogle.vue";
+import Toggle from "../../src/components/Toggle.vue";
 
 const label = "Test label";
 const firstOption = "Test first option";
 const secondOption = "Test second option";
 const factory = propsData => {
-  return mount(Toogle, {
+  return mount(Toggle, {
     propsData: {
       label: label,
       firstOption: firstOption,
@@ -15,9 +15,9 @@ const factory = propsData => {
   });
 };
 
-describe("Toogle.vue", () => {
+describe("Toggle.vue", () => {
   it("renders correctly", () => {
-    const wrapper = mount(Toogle);
+    const wrapper = mount(Toggle);
 
     expect(wrapper.vm.$el).toMatchSnapshot();
   });
@@ -25,9 +25,9 @@ describe("Toogle.vue", () => {
   it("displays a passed properties", () => {
     const wrapper = factory();
 
-    const ToogleWrapper = wrapper.find(".toogle");
-    expect(ToogleWrapper.find(".label").text()).toBe(label);
-    const OptionLabels = ToogleWrapper.findAll(".btn-group-toggle label");
+    const ToggleWrapper = wrapper.find(".toggle");
+    expect(ToggleWrapper.find(".label").text()).toBe(label);
+    const OptionLabels = ToggleWrapper.findAll(".btn-group-toggle label");
     expect(OptionLabels.at(0).text()).toBe(firstOption);
     expect(OptionLabels.at(1).text()).toBe(secondOption);
   });
@@ -36,16 +36,14 @@ describe("Toogle.vue", () => {
     const wrapper = factory();
 
     const firstOption = wrapper
-      .findAll(".toogle .btn-group-toggle label")
+      .findAll(".toggle .btn-group-toggle label")
       .at(0);
-    const firstOptionRadioInput = firstOption.find("input[type='radio']");
-    expect(firstOptionRadioInput.element.checked).toBeTruthy();
     expect(firstOption.classes("active")).toBe(true);
   });
 
   it("switch between options on click", async () => {
     const wrapper = factory();
-    const OptionLabels = wrapper.findAll(".toogle .btn-group-toggle label");
+    const OptionLabels = wrapper.findAll(".toggle .btn-group-toggle label");
     const firstOptionLabel = OptionLabels.at(0);
     const secondOptionLabel = OptionLabels.at(1);
     const firstOptionRadioInput = firstOptionLabel.find("input[type='radio']");
@@ -64,7 +62,7 @@ describe("Toogle.vue", () => {
 
   it("emit value-switched event when option changed", async () => {
     const wrapper = factory();
-    const OptionLabels = wrapper.findAll(".toogle .btn-group-toggle label");
+    const OptionLabels = wrapper.findAll(".toggle .btn-group-toggle label");
     const secondOptionLabel = OptionLabels.at(1);
     const secondOptionRadioInput = secondOptionLabel.find(
       "input[type='radio']"
