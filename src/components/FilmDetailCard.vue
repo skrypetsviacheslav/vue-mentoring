@@ -18,7 +18,7 @@
           </div>
           <div class="row p-1">
             <p class="card-text">
-              <small>{{ formattedGenres }}</small>
+              <small>{{ genres }}</small>
             </p>
           </div>
           <div class="row p-1">
@@ -46,41 +46,32 @@
 export default {
   name: "FilmDetailCard",
   props: {
-    imageUrl: {
-      type: String,
-      require: true
-    },
-    title: {
-      type: String,
-      require: true
-    },
-    releaseDate: {
-      type: String,
-      require: true
-    },
-    duration: {
-      type: Number,
-      require: true
-    },
-    genres: {
-      type: Array,
-      require: true
-    },
-    description: {
-      type: String,
-      require: true
-    },
-    rate: {
-      type: Number,
+    movie: {
+      type: Object,
       require: true
     }
   },
   computed: {
-    formattedGenres() {
-      return this.genres.join(" & ");
+    title() {
+      return this.movie.title;
+    },
+    imageUrl() {
+      return this.movie.poster_path;
+    },
+    rate() {
+      return this.movie.vote_average;
+    },
+    genres() {
+      return this.movie.genres.join(" & ");
     },
     releaseYear() {
-      return this.releaseDate.substring(0, 4);
+      return this.movie.release_date.substring(0, 4);
+    },
+    duration() {
+      return this.movie.runtime;
+    },
+    description() {
+      return this.movie.overview;
     }
   }
 };

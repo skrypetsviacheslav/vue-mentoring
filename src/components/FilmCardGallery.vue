@@ -7,10 +7,7 @@
       <div class="col-md-4" v-for="card in cards" :key="card.id">
         <FilmCard
           class="mb-4"
-          :imageUrl="card.poster_path"
-          :title="card.title"
-          :releaseDate="card.release_date"
-          :genres="card.genres"
+          :movie="convertMovieData(card)"
           @film-card-clicked="onCardClick(card.id)"
         />
       </div>
@@ -19,6 +16,8 @@
 </template>
 
 <script>
+import pick from "lodash.pick";
+
 import FilmCard from "./FilmCard.vue";
 
 import { EVENTS } from "../config/constants";
@@ -36,6 +35,14 @@ export default {
     cards: { type: Array }
   },
   methods: {
+    convertMovieData(movieCard) {
+      return pick(movieCard, [
+        "title",
+        "release_date",
+        "poster_path",
+        "genres"
+      ]);
+    },
     onCardClick(cardId) {
       console.log("FilmCardGallery#onCardClick");
       this.$emit(EVENTS.FILM_GALLERY_CARD_CLICKED, cardId);

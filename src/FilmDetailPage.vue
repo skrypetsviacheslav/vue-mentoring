@@ -17,15 +17,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <FilmDetailCard
-                :imageUrl="selectedMovie.poster_path"
-                :title="selectedMovie.title"
-                :releaseDate="selectedMovie.release_date"
-                :duration="selectedMovie.runtime"
-                :genres="selectedMovie.genres"
-                :description="selectedMovie.overview"
-                :rate="selectedMovie.vote_average"
-              />
+              <FilmDetailCard :movie="selectedMovie" />
             </div>
           </div>
         </Header>
@@ -51,6 +43,8 @@
 </template>
 
 <script>
+import pick from "lodash.pick";
+
 import AppNameLabel from "./components/AppNameLabel";
 import Header from "./components/Header";
 import FilmDetailCard from "./components/FilmDetailCard";
@@ -77,7 +71,16 @@ export default {
   },
   computed: {
     selectedMovie() {
-      return this.$store.state.selectedMovie;
+      return pick(this.$store.state.selectedMovie, [
+        "id",
+        "title",
+        "poster_path",
+        "vote_average",
+        "genres",
+        "release_date",
+        "runtime",
+        "overview"
+      ]);
     },
     selectedMovieMainGenre() {
       return this.selectedMovie.genres[0];

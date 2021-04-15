@@ -1,23 +1,20 @@
 import { mount } from "@vue/test-utils";
 import FilmDetailCard from "../../src/components/FilmDetailCard.vue";
 
-const imageUrl = "imageUrl";
-const title = "Test title";
-const releaseDate = "1994-05-01";
-const rate = 4.3;
-const duration = 154;
-const description = "Test description";
-const genres = ["Test genre", "Test genre2"];
+const movie = {
+  title: "Test title",
+  release_date: "1994-05-01",
+  vote_average: 4.3,
+  runtime: 154,
+  overview: "Test description",
+  poster_path: "imageUrl",
+  genres: ["Test genre", "Test genre2"]
+};
+
 const factory = propsData => {
   return mount(FilmDetailCard, {
     propsData: {
-      imageUrl: imageUrl,
-      title: title,
-      releaseDate: releaseDate,
-      rate: rate,
-      duration: duration,
-      description: description,
-      genres: genres,
+      movie,
       ...propsData
     }
   });
@@ -36,13 +33,13 @@ describe("FilmDetailCard.vue", () => {
 
     const cardWrapper = wrapper.find(".card");
     const cardBodyWrapper = cardWrapper.find(".card .card-body");
-    expect(cardWrapper.find("img").attributes("src")).toBe(imageUrl);
-    expect(cardBodyWrapper.text()).toContain(title);
+    expect(cardWrapper.find("img").attributes("src")).toBe(movie.poster_path);
+    expect(cardBodyWrapper.text()).toContain(movie.title);
 
     expect(cardBodyWrapper.text()).toContain(formmatedReleaseDate);
-    expect(cardBodyWrapper.text()).toContain(rate);
-    expect(cardBodyWrapper.text()).toContain(duration);
-    expect(cardBodyWrapper.text()).toContain(description);
+    expect(cardBodyWrapper.text()).toContain(movie.vote_average);
+    expect(cardBodyWrapper.text()).toContain(movie.runtime);
+    expect(cardBodyWrapper.text()).toContain(movie.overview);
   });
 
   it("displays formatted genres prop", () => {
