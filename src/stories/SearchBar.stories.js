@@ -17,14 +17,14 @@ export default {
 };
 
 export const actionsData = {
-  onButtonClick: action("button-clicked")
+  onSearchSunmitted: action("search-submitted")
 };
 
 const Template = (args, { argTypes }) => ({
   components: { SearchBar },
   props: Object.keys(argTypes),
   methods: actionsData,
-  template: `<SearchBar v-bind="$props" @button-clicked='onButtonClick'/>`
+  template: `<SearchBar v-bind="$props" @search-submitted='onSearchSunmitted'/>`
 });
 
 export const By_Title_and_Genre = Template.bind({});
