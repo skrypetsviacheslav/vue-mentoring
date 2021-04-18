@@ -1,6 +1,10 @@
-import { mount } from "@vue/test-utils";
+import { createLocalVue, mount } from "@vue/test-utils";
 import FilmCard from "../../src/components/FilmCard.vue";
+import { install } from "../../src/plugins/movieHelperPlugin";
 
+const localVue = createLocalVue();
+
+localVue.use(install);
 const movie = {
   title: "Test title",
   release_date: "2000-05-01",
@@ -13,7 +17,8 @@ const factory = propsData => {
     propsData: {
       movie,
       ...propsData
-    }
+    },
+    localVue
   });
 };
 

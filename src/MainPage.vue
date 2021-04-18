@@ -48,6 +48,7 @@
         class="gallery__bg-dark p-4"
         :cards="sortedMovies"
         @film-gallery-card-clicked="onFilmCardClick"
+        @film-gallery-load-more-clicked="OnFilmGalleryLoadMoreClicked"
       />
     </BaseLayout>
   </div>
@@ -63,7 +64,17 @@ import BaseLayout from "./components/layout/BaseLayout";
 
 import { publicPath } from "../vue.config";
 import I18N from "./config/i18n/index";
-import { MUTATIONS } from "./config/constants";
+import {
+  MODULE_NAME,
+  ACTIONS,
+  GETTERS
+} from "./store/modules/mainPage/constants";
+import {
+  MODULE_NAME as SEARCH_MODULE_NAME,
+  MUTATIONS as SEARCH_MUTATIONS,
+  SEARCH_BY_OPTIONS
+} from "./store/modules/search/constants";
+import { MUTATIONS } from "./store/constants";
 
 export default {
   name: "MainPage",
@@ -91,9 +102,13 @@ export default {
   computed: {
     sortedMovies() {
       if (this.sortBySelectedOption === this.sortByFirstOptionText) {
-        return this.$store.getters.searchingMoviesSortedByReleaseDate;
+        return this.$store.getters[
+          MODULE_NAME + "/" + GETTERS.GALLERY_MOVIES_SORTED_BY_RATING
+        ];
       } else {
-        return this.$store.getters.searchingMoviesSortedByRating;
+        return this.$store.getters[
+          MODULE_NAME + "/" + GETTERS.GALLERY_MOVIES_SORTED_BY_RELEASE_DATE
+        ];
       }
     }
   },
@@ -109,18 +124,41 @@ export default {
         searchByOption
       );
 
+      this.$store.commit(
+        SEARCH_MODULE_NAME + "/" + SEARCH_MUTATIONS.SET_SEARCH_TEXT,
+        searchText
+      );
       if (searchByOption === I18N["EN"].SEARCH_BY_FIRST_OPTION_TEXT) {
-        this.$store.commit(MUTATIONS.FILTER_MOVIES_BY_TITLE, searchText.trim());
+        this.$store.commit(
+          SEARCH_MODULE_NAME + "/" + SEARCH_MUTATIONS.SET_SEARCH_BY_OPTION,
+          SEARCH_BY_OPTIONS.TITLE
+        );
       } else {
-        this.$store.commit(MUTATIONS.FILTER_MOVIES_BY_GENRE, searchText.trim());
+        this.$store.commit(
+          SEARCH_MODULE_NAME + "/" + SEARCH_MUTATIONS.SET_SEARCH_BY_OPTION,
+          SEARCH_BY_OPTIONS.GENRE
+        );
       }
+      this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.SEARCH_MOVIES);
     },
     onFilmCardClick(movieID) {
       console.log("MainPage#onFilmCardClick id", movieID);
-      const newSelectedMovie = this.$store.getters.findMovie(movieID);
-      this.$store.commit(MUTATIONS.SET_SELECTED_MOVIE, newSelectedMovie);
+      const newSelectedMovie = this.$store.getters[
+        MODULE_NAME + "/" + GETTERS.FIND_MOVIE
+      ](movieID);
+      this.$store.commit(MUTATIONS.SET_SELECTED_MOVIE, newSelectedMovie, {
+        root: true
+      });
       window.location.href = publicPath + "details";
+    },
+    OnFilmGalleryLoadMoreClicked() {
+      console.log("FilmDetailPage#OnFilmGalleryLoadMoreClicked");
+      this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.LOAD_MORE_MOVIES);
     }
+  },
+
+  beforeMount() {
+    this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.LOAD_MORE_MOVIES);
   }
 };
 </script>
