@@ -1,19 +1,24 @@
-import { mount } from "@vue/test-utils";
+import { createLocalVue, mount } from "@vue/test-utils";
 import FilmCard from "../../src/components/FilmCard.vue";
+import { install } from "../../src/plugins/movieHelperPlugin";
 
-const imageUrl = "imageUrl";
-const title = "Test title";
-const releaseDate = "2000-05-01";
-const genres = ["Test genre", "Test genre2"];
+const localVue = createLocalVue();
+
+localVue.use(install);
+const movie = {
+  title: "Test title",
+  release_date: "2000-05-01",
+  poster_path: "imageUrl",
+  genres: ["Test genre", "Test genre2"]
+};
+
 const factory = propsData => {
   return mount(FilmCard, {
     propsData: {
-      imageUrl: imageUrl,
-      title: title,
-      releaseDate: releaseDate,
-      genres: genres,
+      movie,
       ...propsData
-    }
+    },
+    localVue
   });
 };
 
@@ -30,8 +35,10 @@ describe("FilmCard.vue", () => {
 
     const cardWrapper = wrapper.find(".card");
     const cardBodyWrapper = cardWrapper.find(".card .card-body");
-    expect(cardWrapper.find(".card-img-top").attributes("src")).toBe(imageUrl);
-    expect(cardBodyWrapper.find("h6").text()).toBe(title);
+    expect(cardWrapper.find(".card-img-top").attributes("src")).toBe(
+      movie.poster_path
+    );
+    expect(cardBodyWrapper.find("h6").text()).toBe(movie.title);
     expect(cardBodyWrapper.find("span").text()).toBe(formmatedReleaseDate);
   });
 

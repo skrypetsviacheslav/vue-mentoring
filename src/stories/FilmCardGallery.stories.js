@@ -17,14 +17,14 @@ export default {
 };
 
 export const actionsData = {
-  onCardClicked: action("card-clicked")
+  OnFilmGalleryCardClicked: action("film-gallery-card-clicked")
 };
 
 const Template = (args, { argTypes }) => ({
   components: { FilmCardGallery },
   props: Object.keys(argTypes),
   methods: actionsData,
-  template: `<FilmCardGallery v-bind="$props" @card-clicked='onCardClicked'/>`
+  template: `<FilmCardGallery v-bind="$props" @film-gallery-card-clicked='OnFilmGalleryCardClicked'/>`
 });
 
 export const Empty = Template.bind({});

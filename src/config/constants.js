@@ -1,14 +1,17 @@
 const EVENTS = {
   FILM_CARD_CLICKED: "film-card-clicked",
   FILM_GALLERY_CARD_CLICKED: "film-gallery-card-clicked",
+  FILM_GALLERY_LOAD_MORE_CLICKED: "film-gallery-load-more-clicked",
   SEARCH_BAR_SEARCH_SUBMITTED: "search-submitted",
   TOGGLE_VALUE_SWITCHED: "value-switched"
 };
 
 const MUTATIONS = {
-  SET_SELECTED_MOVIE: "setSelectedMovie",
-  FILTER_MOVIES_BY_TITLE: "filterMoviesByTitle",
-  FILTER_MOVIES_BY_GENRE: "filterMoviesByGenre"
+  SET_SELECTED_MOVIE: "setSelectedMovie"
 };
 
-export { EVENTS, MUTATIONS };
+const APP_CONFIG = {
+  UPLOADING_MOVIES_CHUNK_SIZE: 6
+};
+
+export { EVENTS, MUTATIONS, APP_CONFIG };

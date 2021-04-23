@@ -17,15 +17,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <FilmDetailCard
-                :imageUrl="selectedMovie.poster_path"
-                :title="selectedMovie.title"
-                :releaseDate="selectedMovie.release_date"
-                :duration="selectedMovie.runtime"
-                :genres="selectedMovie.genres"
-                :description="selectedMovie.overview"
-                :rate="selectedMovie.vote_average"
-              />
+              <FilmDetailCard :movie="selectedMovie" />
             </div>
           </div>
         </Header>
@@ -45,12 +37,15 @@
         class="gallery__bg-dark p-4"
         :cards="movies"
         @film-gallery-card-clicked="onFilmCardClick"
+        @film-gallery-load-more-clicked="OnFilmGalleryLoadMoreClicked"
       />
     </BaseLayout>
   </div>
 </template>
 
 <script>
+import pick from "lodash.pick";
+
 import AppNameLabel from "./components/AppNameLabel";
 import Header from "./components/Header";
 import FilmDetailCard from "./components/FilmDetailCard";
@@ -58,7 +53,13 @@ import FilmCardGallery from "./components/FilmCardGallery";
 import BaseLayout from "./components/layout/BaseLayout";
 
 import I18N from "./config/i18n/index";
-import { MUTATIONS } from "./config/constants";
+import {
+  MODULE_NAME,
+  ACTIONS,
+  GETTERS,
+  STATES as DETAILS_PAGE_STATES
+} from "./store/modules/filmDetailPage/constants";
+import { STATES, MUTATIONS } from "./store/constants";
 
 export default {
   name: "FilmDetailPage",
@@ -77,15 +78,22 @@ export default {
   },
   computed: {
     selectedMovie() {
-      return this.$store.state.selectedMovie;
+      return pick(this.$store.state[STATES.SELECTED_MOVIE], [
+        "id",
+        "title",
+        "poster_path",
+        "vote_average",
+        "genres",
+        "release_date",
+        "runtime",
+        "overview"
+      ]);
     },
     selectedMovieMainGenre() {
       return this.selectedMovie.genres[0];
     },
     movies() {
-      return this.$store.getters
-        .moviesFilteredByGenre(this.selectedMovieMainGenre)
-        .filter(movie => movie.id !== this.selectedMovie.id);
+      return this.$store.state[MODULE_NAME][DETAILS_PAGE_STATES.GALLERY_MOVIES];
     },
     filmsByMsg() {
       return `${this.filmsByPrefix} ${this.selectedMovieMainGenre} ${this.filmsBySuffix}`;
@@ -94,9 +102,22 @@ export default {
   methods: {
     onFilmCardClick(movieID) {
       console.log("FilmDetailPage#onFilmCardClick id", movieID);
-      const newSelectedMovie = this.$store.getters.findMovie(movieID);
-      this.$store.commit(MUTATIONS.SET_SELECTED_MOVIE, newSelectedMovie);
+      const newSelectedMovie = this.$store.getters[
+        MODULE_NAME + "/" + GETTERS.FIND_MOVIE
+      ](movieID);
+      this.$store.commit(MUTATIONS.SET_SELECTED_MOVIE, newSelectedMovie, {
+        root: true
+      });
+      this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.SEARCH_MOVIES_BY_GENRE);
+    },
+    OnFilmGalleryLoadMoreClicked() {
+      console.log("FilmDetailPage#OnFilmGalleryLoadMoreClicked");
+      this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.LOAD_MORE_MOVIES);
     }
+  },
+
+  beforeMount() {
+    this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.LOAD_MORE_MOVIES);
   }
 };
 </script>

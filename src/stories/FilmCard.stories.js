@@ -7,21 +7,23 @@ export default {
 };
 
 export const actionsData = {
-  onCardClicked: action("card-clicked")
+  onFilmCardClicked: action("film-card-clicked")
 };
 
 const Template = (args, { argTypes }) => ({
   components: { FilmCard },
   props: Object.keys(argTypes),
   methods: actionsData,
-  template: `<FilmCard v-bind="$props" @card-clicked='onCardClicked'/>`
+  template: `<FilmCard v-bind="$props" @film-card-clicked='onFilmCardClicked'/>`
 });
 
 export const Kill_Bill_vol2 = Template.bind({});
 Kill_Bill_vol2.args = {
-  imageUrl:
-    "https://images-na.ssl-images-amazon.com/images/I/51UQNTy4GqL._AC_.jpg",
-  title: "Kill Bill: Vol 2",
-  genres: ["Oscar winning Movie", "Action"],
-  releaseDate: "1994-05-01"
+  movie: {
+    poster_path:
+      "https://images-na.ssl-images-amazon.com/images/I/51UQNTy4GqL._AC_.jpg",
+    title: "Kill Bill: Vol 2",
+    genres: ["Oscar winning Movie", "Action"],
+    release_date: "1994-05-01"
+  }
 };

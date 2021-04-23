@@ -8,14 +8,14 @@
         </div>
         <div class="col">
           <span class="card-title border rounded p-1">
-            {{ releaseYear }}
+            {{ releaseYear | extractYear }}
           </span>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <p class="card-text">
-            <small>{{ formattedGenres }}</small>
+            <small>{{ genres | joinByComma }}</small>
           </p>
         </div>
       </div>
@@ -29,29 +29,23 @@ import { EVENTS } from "../config/constants";
 export default {
   name: "FilmCard",
   props: {
-    imageUrl: {
-      type: String,
-      require: true
-    },
-    title: {
-      type: String,
-      require: true
-    },
-    releaseDate: {
-      type: String,
-      require: true
-    },
-    genres: {
-      type: Array,
+    movie: {
+      type: Object,
       require: true
     }
   },
   computed: {
-    formattedGenres() {
-      return this.genres.join(" & ");
+    title() {
+      return this.movie.title;
+    },
+    imageUrl() {
+      return this.movie.poster_path;
+    },
+    genres() {
+      return this.movie.genres;
     },
     releaseYear() {
-      return this.releaseDate.substring(0, 4);
+      return this.movie.release_date;
     }
   },
   methods: {

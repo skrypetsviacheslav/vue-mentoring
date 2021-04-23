@@ -18,17 +18,17 @@
           </div>
           <div class="row p-1">
             <p class="card-text">
-              <small>{{ formattedGenres }}</small>
+              <small>{{ genres | joinByComma }}</small>
             </p>
           </div>
           <div class="row p-1">
             <div class="pr-3">
-              <span class="spec">{{ releaseYear }}</span>
-              <span class="card-text small"> year</span>
+              <span class="spec">{{ releaseYear | extractYear }}</span>
+              <span class="card-text small"> {{ year }}</span>
             </div>
             <div v-if="duration" class="pl-3">
               <span class="spec">{{ duration }} </span>
-              <span class="card-text small">min</span>
+              <span class="card-text small"> {{ min }}</span>
             </div>
           </div>
           <div class="row p-1">
@@ -43,44 +43,43 @@
 </template>
 
 <script>
+import I18N from "../config/i18n/index";
+
 export default {
   name: "FilmDetailCard",
   props: {
-    imageUrl: {
-      type: String,
-      require: true
-    },
-    title: {
-      type: String,
-      require: true
-    },
-    releaseDate: {
-      type: String,
-      require: true
-    },
-    duration: {
-      type: Number,
-      require: true
-    },
-    genres: {
-      type: Array,
-      require: true
-    },
-    description: {
-      type: String,
-      require: true
-    },
-    rate: {
-      type: Number,
+    movie: {
+      type: Object,
       require: true
     }
   },
+  data: () => {
+    return {
+      year: I18N["EN"].YEAR,
+      min: I18N["EN"].MIN
+    };
+  },
   computed: {
-    formattedGenres() {
-      return this.genres.join(" & ");
+    title() {
+      return this.movie.title;
+    },
+    imageUrl() {
+      return this.movie.poster_path;
+    },
+    rate() {
+      return this.movie.vote_average;
+    },
+    genres() {
+      return this.movie.genres;
     },
     releaseYear() {
-      return this.releaseDate.substring(0, 4);
+      return this.movie.release_date;
+    },
+    duration() {
+      return this.movie.runtime;
+    },
+    description() {
+      return this.movie.overview;
     }
   }
 };
