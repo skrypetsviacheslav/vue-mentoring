@@ -1,6 +1,6 @@
 <template>
   <div class="card" @click="onCardClick">
-    <img class="card-img-top" :src="imageUrl" />
+    <img class="card-img-top" :src="imageUrl" @error="setDefaultImage" />
     <div class="card-body">
       <div class="row">
         <div class="col-9">
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { EVENTS } from "../config/constants";
+const { EVENTS, APP_CONFIG } = require("../config/constants");
 
 export default {
   name: "FilmCard",
@@ -52,6 +52,9 @@ export default {
     onCardClick() {
       console.log("FilmCard#onCardClick");
       this.$emit(EVENTS.FILM_CARD_CLICKED);
+    },
+    setDefaultImage(event) {
+      event.target.src = require(`@/${APP_CONFIG.DEFAULT_IMAGE_PATH}`);
     }
   }
 };
