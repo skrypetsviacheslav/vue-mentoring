@@ -6,4 +6,8 @@ const MUTATIONS = {
   SET_SELECTED_MOVIE: "setSelectedMovie"
 };
 
-export { STATES, MUTATIONS };
+const ACTIONS = {
+  FETCH_SELECTED_MOVIE: "fetchSelectedMovie"
+};
+
+export { STATES, MUTATIONS, ACTIONS };

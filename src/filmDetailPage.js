@@ -1,7 +1,10 @@
 import Vue from "vue";
 import FilmDetailPage from "./FilmDetailPage.vue";
 import store from "./store/store";
+import MovieApiService from "./core/movieApiService";
 import { install } from "./plugins/movieHelperPlugin";
+
+MovieApiService.init();
 
 Vue.config.productionTip = false;
 

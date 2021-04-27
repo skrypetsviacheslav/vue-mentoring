@@ -29,7 +29,7 @@
         <div class="row align-items-center h-100">
           <div class="col">
             <span class="text-white pl-5">
-              {{ sortedMovies.length }} {{ movieFoundLabel }}
+              {{ foundMoviesSize }} {{ movieFoundLabel }}
             </span>
           </div>
           <div class="col">
@@ -46,7 +46,7 @@
 
       <FilmCardGallery
         class="gallery__bg-dark p-4"
-        :cards="sortedMovies"
+        :cards="galleryMovies"
         @film-gallery-card-clicked="onFilmCardClick"
         @film-gallery-load-more-clicked="OnFilmGalleryLoadMoreClicked"
       />
@@ -67,14 +67,15 @@ import I18N from "./config/i18n/index";
 import {
   MODULE_NAME,
   ACTIONS,
-  GETTERS
+  STATES
 } from "./store/modules/mainPage/constants";
 import {
   MODULE_NAME as SEARCH_MODULE_NAME,
   MUTATIONS as SEARCH_MUTATIONS,
-  SEARCH_BY_OPTIONS
+  SEARCH_BY_OPTIONS,
+  SORT_BY_OPTIONS
 } from "./store/modules/search/constants";
-import { MUTATIONS } from "./store/constants";
+import { ACTIONS as CORE_ACTION } from "./store/constants";
 
 export default {
   name: "MainPage",
@@ -93,29 +94,34 @@ export default {
       sortByLabel: I18N["EN"].SORT_BY_LABEL,
       sortByFirstOptionText: I18N["EN"].SORT_BY_FIRST_OPTION_TEXT,
       sortBySecondOptionText: I18N["EN"].SORT_BY_SECOND_OPTION_TEXT,
-      sortBySelectedOption: I18N["EN"].SORT_BY_FIRST_OPTION_TEXT,
 
       searchByFirstOptionText: I18N["EN"].SEARCH_BY_FIRST_OPTION_TEXT,
       searchBySecondOptionText: I18N["EN"].SEARCH_BY_SECOND_OPTION_TEXT
     };
   },
   computed: {
-    sortedMovies() {
-      if (this.sortBySelectedOption === this.sortByFirstOptionText) {
-        return this.$store.getters[
-          MODULE_NAME + "/" + GETTERS.GALLERY_MOVIES_SORTED_BY_RATING
-        ];
-      } else {
-        return this.$store.getters[
-          MODULE_NAME + "/" + GETTERS.GALLERY_MOVIES_SORTED_BY_RELEASE_DATE
-        ];
-      }
+    galleryMovies() {
+      return this.$store.state[MODULE_NAME][STATES.GALLERY_MOVIES];
+    },
+    foundMoviesSize() {
+      return this.$store.state[MODULE_NAME][STATES.FOUND_MOVIES_SIZE];
     }
   },
   methods: {
     onSortByToggleValueSwitched(sortByValue) {
       console.log("MainPage#onSortByToggleValueSwitched", sortByValue);
-      this.sortBySelectedOption = sortByValue;
+      if (sortByValue === I18N["EN"].SORT_BY_FIRST_OPTION_TEXT) {
+        this.$store.commit(
+          SEARCH_MODULE_NAME + "/" + SEARCH_MUTATIONS.SET_SORT_BY_OPTION,
+          SORT_BY_OPTIONS.RELEASE_DATE
+        );
+      } else {
+        this.$store.commit(
+          SEARCH_MODULE_NAME + "/" + SEARCH_MUTATIONS.SET_SORT_BY_OPTION,
+          SORT_BY_OPTIONS.RATING
+        );
+      }
+      this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.SEARCH_MOVIES);
     },
     onSearchBarButtonClicked(searchText, searchByOption) {
       console.log(
@@ -143,13 +149,9 @@ export default {
     },
     onFilmCardClick(movieID) {
       console.log("MainPage#onFilmCardClick id", movieID);
-      const newSelectedMovie = this.$store.getters[
-        MODULE_NAME + "/" + GETTERS.FIND_MOVIE
-      ](movieID);
-      this.$store.commit(MUTATIONS.SET_SELECTED_MOVIE, newSelectedMovie, {
-        root: true
-      });
-      window.location.href = publicPath + "details";
+      this.$store
+        .dispatch(CORE_ACTION.FETCH_SELECTED_MOVIE, movieID) // temp solution
+        .then(() => (window.location.href = publicPath + "details"));
     },
     OnFilmGalleryLoadMoreClicked() {
       console.log("FilmDetailPage#OnFilmGalleryLoadMoreClicked");
@@ -158,7 +160,7 @@ export default {
   },
 
   beforeMount() {
-    this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.LOAD_MORE_MOVIES);
+    this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.SEARCH_MOVIES);
   }
 };
 </script>
