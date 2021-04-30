@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <h1>TEST WORKFLOW</h1>
     <BaseLayout>
       <template v-slot:header>
         <Header>
