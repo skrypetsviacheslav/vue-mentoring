@@ -1,0 +1,101 @@
+name: Deploy demo [Pull request]
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  get_pr_labels:
+    runs-on: ubuntu-latest
+    outputs:
+      pr_labels: ${{ steps.pr-labels.outputs.labels }}
+    steps:
+      - name: Get PR labels
+        id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.6
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Cache node modules
+        id: cache-noce-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install dependencies
+        if: steps.cache-noce-modules.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+      - name: Test
+        run: npm run test:unit
+  deploy:
+    environment:
+      name: dev
+    needs: [ test, get_pr_labels ]
+    if: contains(needs.get_pr_labels.outputs.pr_labels, ' deploy-demo ')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: chrnorm/deployment-action@v1.2.0
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target_url : https://skrypetsviacheslav.github.io/vue-mentoring/
+          environment: dev
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Cache node modules
+        id: cache-noce-modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install dependencies
+        if: steps.cache-noce-modules.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+      - name: Build
+        run: npm run build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./dist
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
+          state: "success"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
+          state: "failure"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
