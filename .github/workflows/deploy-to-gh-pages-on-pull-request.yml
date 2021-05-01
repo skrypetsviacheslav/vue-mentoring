@@ -6,16 +6,21 @@ on:
       - master
 
 jobs:
-  test:
+  get_pr_labels:
     runs-on: ubuntu-latest
+    outputs:
+      pr_labels: ${{ steps.pr-labels.outputs.labels }}
     steps:
       - name: Get PR labels
         id: pr-labels
         uses: joerick/pr-labels-action@v1.0.6
-      - name: test
+      - name: echo
         env:
-          GITHUB_CONTEXT: ${{ steps.pr-labels.outputs.labels }}
-        run: echo "$GITHUB_CONTEXT"
+          LABELS: ${{ steps.pr-labels.outputs.labels }}
+        run: echo "LABELS"
+  test:
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Node.js
@@ -40,8 +45,8 @@ jobs:
       - name: Test
         run: npm run test:unit
   deploy:
-    if: ${{ github.event.label.name == 'deploy_demo' }}
-    needs: test
+    needs: [test, get_pr_labels]
+    if: ${{ needs.get_pr_labels.outputs.pr_labels == 'deploy_demo' }}
     runs-on: ubuntu-latest
     steps:
       - uses: chrnorm/deployment-action@releases/v1
