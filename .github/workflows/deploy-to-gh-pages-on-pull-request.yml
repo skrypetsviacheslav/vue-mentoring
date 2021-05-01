@@ -17,7 +17,10 @@ jobs:
       - name: echo
         env:
           LABELS: ${{ steps.pr-labels.outputs.labels }}
-        run: echo "LABELS"
+        run: echo "$LABELS"
+      - name: contains
+        if: contains(steps.pr-labels.outputs.labels, ' deploy_demo ')
+        run: echo contains
   test:
     runs-on: ubuntu-latest
     steps:
