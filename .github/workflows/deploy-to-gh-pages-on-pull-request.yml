@@ -14,10 +14,6 @@ jobs:
       - name: Get PR labels
         id: pr-labels
         uses: joerick/pr-labels-action@v1.0.6
-      - name: echo
-        env:
-          LABELS: ${{ steps.pr-labels.outputs.labels }}
-        run: echo "$LABELS"
   test:
     runs-on: ubuntu-latest
     steps:
@@ -55,7 +51,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
-          ref: ${GITHUB_REF##*/}
+          ref: ${{ GITHUB_REF##*/ }}
           environment: dev
       - name: Checkout
         uses: actions/checkout@v2
