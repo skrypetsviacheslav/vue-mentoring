@@ -49,7 +49,7 @@ jobs:
         name: Create GitHub deployment
         id: deployment
         with:
-          token: ${{ env.DEPLOY_SECRET }}
+          token: ${{ secrets.DEPLOY_SECRET }}
           target_url : https://skrypetsviacheslav.github.io/vue-mentoring/
           environment: dev
       - name: Checkout
@@ -85,7 +85,7 @@ jobs:
         if: success()
         uses: chrnorm/deployment-status@releases/v1
         with:
-          token: ${{ env.DEPLOY_SECRET }}
+          token: ${{ secrets.DEPLOY_SECRET }}
           target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
           state: "success"
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
@@ -93,7 +93,7 @@ jobs:
         if: failure()
         uses: chrnorm/deployment-status@releases/v1
         with:
-          token: ${{ env.DEPLOY_SECRET }}
+          token: ${{ secrets.DEPLOY_SECRET }}
           target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
           state: "failure"
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
