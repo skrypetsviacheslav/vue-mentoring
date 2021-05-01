@@ -2,12 +2,6 @@ import { mount } from "@vue/test-utils";
 import BaseLayout from "../../src/components/layout/BaseLayout.vue";
 
 describe("BaseLayout.vue", () => {
-  it("renders correctly", () => {
-    const wrapper = mount(BaseLayout);
-
-    expect(wrapper.vm.$el).toMatchSnapshot();
-  });
-
   it("displays a passed properties", () => {
     const headerSlotContent = "<h1>Header slot content</h1>";
     const toolbarSlotContent = "<h1>Toolbar slot content</h1>";

@@ -27,12 +27,6 @@ const factory = propsData => {
 };
 
 describe("FilmDetailCard.vue", () => {
-  it("renders correctly", () => {
-    const wrapper = factory();
-
-    expect(wrapper.vm.$el).toMatchSnapshot();
-  });
-
   it("displays a passed properties", () => {
     const formmatedReleaseDate = "1994";
     const wrapper = factory();
