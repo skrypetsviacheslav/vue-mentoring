@@ -18,9 +18,6 @@ jobs:
         env:
           LABELS: ${{ steps.pr-labels.outputs.labels }}
         run: echo "$LABELS"
-      - name: contains
-        if: contains(steps.pr-labels.outputs.labels, ' deploy-demo ')
-        run: echo contains
   test:
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +45,7 @@ jobs:
       - name: Test
         run: npm run test:unit
   deploy:
-    needs: [test, get_pr_labels]
+    needs: [ test, get_pr_labels ]
     if: contains(needs.get_pr_labels.outputs.pr_labels, ' deploy-demo ')
     runs-on: ubuntu-latest
     steps:
@@ -58,6 +55,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
+          ref: ${GITHUB_REF##*/}
           environment: dev
       - name: Checkout
         uses: actions/checkout@v2
