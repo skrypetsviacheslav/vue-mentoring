@@ -12,7 +12,7 @@ export default {
 
 <style scoped>
 .bg-image {
-  background-image: url("/posters.jpg");
+  background-image: url("~@/assets/posters.jpg");
 
   height: 100%;
 
