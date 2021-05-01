@@ -45,7 +45,7 @@ jobs:
     if: contains(needs.get_pr_labels.outputs.pr_labels, ' deploy-demo ')
     runs-on: ubuntu-latest
     steps:
-      - uses: chrnorm/deployment-action@releases/v1.2.0
+      - uses: chrnorm/deployment-action@v1.2.0
         name: Create GitHub deployment
         id: deployment
         with:
