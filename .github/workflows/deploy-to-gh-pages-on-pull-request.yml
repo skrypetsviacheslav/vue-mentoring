@@ -45,12 +45,6 @@ jobs:
     if: contains(needs.get_pr_labels.outputs.pr_labels, ' deploy-demo ')
     runs-on: ubuntu-latest
     steps:
-      - name: Step 1 - Echo out a GitHub Actions Secret to the logs
-        run: |
-          echo "The GitHub Action Secret will be masked:  "
-          echo ${{ secrets.DEPLOY_SECRET }}
-          echo "Trick to echo GitHub Actions Secret:  "
-          echo ${{secrets.DEPLOY_SECRET}} | sed 's/./& /g'
       - uses: chrnorm/deployment-action@v1.2.0
         name: Create GitHub deployment
         id: deployment
