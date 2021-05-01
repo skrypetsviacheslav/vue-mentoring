@@ -16,6 +16,7 @@ jobs:
         with:
           node-version: '14'
       - name: Cache node modules
+        id: cache-noce-modules
         uses: actions/cache@v2
         env:
           cache-name: cache-node-modules
@@ -27,7 +28,8 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Install dependencies
-        run: npm install
+        if: steps.cache-noce-modules.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
       - name: Test
         run: npm run test:unit
   deploy:
@@ -41,6 +43,7 @@ jobs:
         with:
           node-version: '14'
       - name: Cache node modules
+        id: cache-noce-modules
         uses: actions/cache@v2
         env:
           cache-name: cache-node-modules
@@ -52,7 +55,8 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Install dependencies
-        run: npm install
+        if: steps.cache-noce-modules.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
       - name: Build
         run: npm run build
       - name: Deploy
