@@ -16,12 +16,6 @@ const factory = propsData => {
 };
 
 describe("Toggle.vue", () => {
-  it("renders correctly", () => {
-    const wrapper = mount(Toggle);
-
-    expect(wrapper.vm.$el).toMatchSnapshot();
-  });
-
   it("displays a passed properties", () => {
     const wrapper = factory();
 
