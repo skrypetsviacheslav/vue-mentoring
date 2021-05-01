@@ -2,7 +2,6 @@ name: Deploy demo [Pull request]
 
 on:
   pull_request:
-    types: [ labeled ]
     branches:
       - master
 
@@ -38,6 +37,13 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
+      - uses: chrnorm/deployment-action@releases/v1
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: "${{ github.token }}"
+          target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
+          environment: dev
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Node.js
@@ -67,3 +73,19 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./dist
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ github.token }}"
+          target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
+          state: "success"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ github.token }}"
+          target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
+          state: "failure"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
