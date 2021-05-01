@@ -49,7 +49,7 @@ jobs:
         name: Create GitHub deployment
         id: deployment
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.DEPLOY_SECRET }}
           target_url : https://skrypetsviacheslav.github.io/vue-mentoring/
           environment: dev
       - name: Checkout
