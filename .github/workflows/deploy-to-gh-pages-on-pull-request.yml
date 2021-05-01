@@ -51,7 +51,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
-          ref: ${{ GITHUB_REF##*/ }}
+          ref: ${{ env.GITHUB_REF##*/ }}
           environment: dev
       - name: Checkout
         uses: actions/checkout@v2
