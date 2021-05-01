@@ -45,12 +45,12 @@ jobs:
     if: contains(needs.get_pr_labels.outputs.pr_labels, ' deploy-demo ')
     runs-on: ubuntu-latest
     steps:
-      - uses: chrnorm/deployment-action@releases/v1
+      - uses: chrnorm/deployment-action@releases/v1.2.0
         name: Create GitHub deployment
         id: deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
+          environment_url : https://skrypetsviacheslav.github.io/vue-mentoring/
           environment: dev
           ref: ${{ env.GITHUB_SHA }}
       - name: Checkout
