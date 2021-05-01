@@ -50,9 +50,9 @@ jobs:
         id: deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment_url : https://skrypetsviacheslav.github.io/vue-mentoring/
+          target_url : https://skrypetsviacheslav.github.io/vue-mentoring/
           environment: dev
-          ref: ${{ env.GITHUB_SHA }}
+          ref: ${{ env.DEPLOY_SECRET }}
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Node.js
@@ -86,7 +86,7 @@ jobs:
         if: success()
         uses: chrnorm/deployment-status@releases/v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.DEPLOY_SECRET }}
           target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
           state: "success"
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
@@ -94,7 +94,7 @@ jobs:
         if: failure()
         uses: chrnorm/deployment-status@releases/v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.DEPLOY_SECRET }}
           target_url: https://skrypetsviacheslav.github.io/vue-mentoring/
           state: "failure"
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
