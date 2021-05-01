@@ -9,9 +9,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
+      - name: Get PR labels
+        id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.6
+      - name: test
         env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+          GITHUB_CONTEXT: ${{ steps.pr-labels.outputs.labels }}
         run: echo "$GITHUB_CONTEXT"
       - name: Checkout
         uses: actions/checkout@v2
