@@ -41,8 +41,6 @@ jobs:
 #      - name: Test
 #        run: npm run test:unit
   deploy:
-    environment:
-      name: dev
     needs: [ test, get_pr_labels ]
     if: contains(needs.get_pr_labels.outputs.pr_labels, ' deploy-demo ')
     runs-on: ubuntu-latest
