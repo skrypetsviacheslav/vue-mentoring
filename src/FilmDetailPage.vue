@@ -9,7 +9,7 @@
             </div>
             <div class="col">
               <div class="float-right">
-                <a href="/">
+                <a style="cursor: pointer" @click="goToMainPage">
                   <i class="fa fa-search icon-red"></i>
                 </a>
               </div>
@@ -58,6 +58,7 @@ import {
   ACTIONS,
   STATES as DETAILS_PAGE_STATES
 } from "./store/modules/filmDetailPage/constants";
+import { publicPath } from "../vue.config";
 import { STATES, ACTIONS as CORE_ACTION } from "./store/constants";
 
 export default {
@@ -111,6 +112,9 @@ export default {
     OnFilmGalleryLoadMoreClicked() {
       console.log("FilmDetailPage#OnFilmGalleryLoadMoreClicked");
       this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.LOAD_MORE_MOVIES);
+    },
+    goToMainPage() {
+      window.location.href = publicPath;
     }
   },
 

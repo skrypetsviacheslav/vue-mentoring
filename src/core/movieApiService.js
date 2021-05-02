@@ -7,7 +7,7 @@ const MovieApiService = {
     movieAxiosInstanse = axios.create({
       timeout: 5000,
       ...options,
-      baseURL: "http://react-cdp-api.herokuapp.com"
+      baseURL: "https://react-cdp-api.herokuapp.com"
     });
 
     if (process.env.DEBUG) {
