@@ -15,12 +15,6 @@ const factory = propsData => {
 };
 
 describe("SearchBar.vue", () => {
-  it("renders correctly", () => {
-    const wrapper = mount(SearchBar);
-
-    expect(wrapper.vm.$el).toMatchSnapshot();
-  });
-
   it("displays a passed properties", () => {
     const wrapper = factory();
 

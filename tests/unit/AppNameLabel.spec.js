@@ -2,12 +2,6 @@ import { mount } from "@vue/test-utils";
 import AppNameLabel from "../../src/components/AppNameLabel.vue";
 
 describe("AppNameLabel.vue", () => {
-  it("renders correctly", () => {
-    const wrapper = mount(AppNameLabel);
-
-    expect(wrapper.vm.$el).toMatchSnapshot();
-  });
-
   it("displays a passed properties", () => {
     const companyName = "company";
     const appName = "app";

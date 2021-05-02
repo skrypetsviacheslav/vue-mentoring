@@ -27,12 +27,6 @@ describe("FilmCardGallery.vue", () => {
     }
   ];
 
-  it("renders correctly", () => {
-    const wrapper = mount(FilmCardGallery);
-
-    expect(wrapper.vm.$el).toMatchSnapshot();
-  });
-
   it("display message when empty array passed to cards", () => {
     const wrapper = mount(FilmCardGallery, {
       propsData: {
