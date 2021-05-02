@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>TEST WORKFLOW v.2</h1>
+    <h1>TEST WORKFLOW v.2.0.1</h1>
     <BaseLayout>
       <template v-slot:header>
         <Header>
