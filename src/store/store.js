@@ -10,15 +10,16 @@ import { MODULE_NAME as DETAIL_PAGE_MODULE } from "./modules/filmDetailPage/cons
 
 import { STATES } from "./constants";
 import { mutations } from "./mutations";
-import MOCK_DATA from "../config/mockData";
+import { actions } from "./actions";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    [STATES.SELECTED_MOVIE]: MOCK_DATA.MOVIES[0]
+    [STATES.SELECTED_MOVIE]: {}
   },
   mutations,
+  actions,
   modules: {
     [MAIN_PAGE_MODULE]: mainPage,
     [SEARCH_MODULE]: search,

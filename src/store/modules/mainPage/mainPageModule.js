@@ -1,4 +1,3 @@
-import { getters } from "./getters";
 import { mutations } from "./mutations";
 import { actions } from "./actions";
 
@@ -8,9 +7,9 @@ export default {
   namespaced: true,
 
   state: {
-    [STATES.GALLERY_MOVIES]: []
+    [STATES.GALLERY_MOVIES]: [],
+    [STATES.FOUND_MOVIES_SIZE]: 0
   },
-  getters,
   mutations,
   actions
 };

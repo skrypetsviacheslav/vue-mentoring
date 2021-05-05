@@ -56,11 +56,10 @@ import I18N from "./config/i18n/index";
 import {
   MODULE_NAME,
   ACTIONS,
-  GETTERS,
   STATES as DETAILS_PAGE_STATES
 } from "./store/modules/filmDetailPage/constants";
-import { STATES, MUTATIONS } from "./store/constants";
 import { publicPath } from "../vue.config";
+import { STATES, ACTIONS as CORE_ACTION } from "./store/constants";
 
 export default {
   name: "FilmDetailPage",
@@ -102,14 +101,13 @@ export default {
   },
   methods: {
     onFilmCardClick(movieID) {
-      console.log("FilmDetailPage#onFilmCardClick id", movieID);
-      const newSelectedMovie = this.$store.getters[
-        MODULE_NAME + "/" + GETTERS.FIND_MOVIE
-      ](movieID);
-      this.$store.commit(MUTATIONS.SET_SELECTED_MOVIE, newSelectedMovie, {
-        root: true
-      });
-      this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.SEARCH_MOVIES_BY_GENRE);
+      this.$store
+        .dispatch(CORE_ACTION.FETCH_SELECTED_MOVIE, movieID)
+        .then(() =>
+          this.$store.dispatch(
+            MODULE_NAME + "/" + ACTIONS.SEARCH_MOVIES_BY_GENRE
+          )
+        );
     },
     OnFilmGalleryLoadMoreClicked() {
       console.log("FilmDetailPage#OnFilmGalleryLoadMoreClicked");
@@ -121,7 +119,11 @@ export default {
   },
 
   beforeMount() {
-    this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.LOAD_MORE_MOVIES);
+    this.$store
+      .dispatch(CORE_ACTION.FETCH_SELECTED_MOVIE, 443009) // temp
+      .then(() =>
+        this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.SEARCH_MOVIES_BY_GENRE)
+      );
   }
 };
 </script>

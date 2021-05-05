@@ -2,7 +2,7 @@
   <div class="card">
     <div class="row">
       <div class="col-4">
-        <img :src="imageUrl" class="card-img" />
+        <img :src="imageUrl" class="card-img" @error="setDefaultImage" />
       </div>
       <div class="col-8">
         <div class="card-body">
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+const { APP_CONFIG } = require("../config/constants");
 import I18N from "../config/i18n/index";
 
 export default {
@@ -80,6 +81,11 @@ export default {
     },
     description() {
       return this.movie.overview;
+    }
+  },
+  methods: {
+    setDefaultImage(event) {
+      event.target.src = require(`@/${APP_CONFIG.DEFAULT_IMAGE_PATH}`);
     }
   }
 };

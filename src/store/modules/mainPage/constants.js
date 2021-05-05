@@ -1,18 +1,14 @@
 const MODULE_NAME = "mainPage";
 
 const STATES = {
-  GALLERY_MOVIES: "galleryMovies"
-};
-
-const GETTERS = {
-  FIND_MOVIE: "findMovie",
-  GALLERY_MOVIES_SORTED_BY_RATING: "galleryMoviesSortedByRating",
-  GALLERY_MOVIES_SORTED_BY_RELEASE_DATE: "galleryMoviesSortedByReleaseDate"
+  GALLERY_MOVIES: "galleryMovies",
+  FOUND_MOVIES_SIZE: "foundMoviesSize"
 };
 
 const MUTATIONS = {
   SET_GALLERY_MOVIES: "setGalleryMovies",
-  ADD_MOVIES_TO_GALLERY: "addMoviesToGallery"
+  ADD_MOVIES_TO_GALLERY: "addMoviesToGallery",
+  SET_FOUND_MOVIES_SIZE: "setFoundMoviesSize"
 };
 
 const ACTIONS = {
@@ -20,4 +16,4 @@ const ACTIONS = {
   SEARCH_MOVIES: "searchMovies"
 };
 
-export { MODULE_NAME, STATES, GETTERS, MUTATIONS, ACTIONS };
+export { MODULE_NAME, STATES, MUTATIONS, ACTIONS };

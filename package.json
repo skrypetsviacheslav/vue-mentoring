@@ -13,6 +13,7 @@
     "deploy-demo": "npm run build && gh-pages --dist dist --branch gh-pages"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "lodash.pick": "^4.4.0",
     "vue": "^2.6.11",
