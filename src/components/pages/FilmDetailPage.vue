@@ -46,20 +46,21 @@
 <script>
 import pick from "lodash.pick";
 
-import AppNameLabel from "./components/AppNameLabel";
-import Header from "./components/Header";
-import FilmDetailCard from "./components/FilmDetailCard";
-import FilmCardGallery from "./components/FilmCardGallery";
-import BaseLayout from "./components/layout/BaseLayout";
+import AppNameLabel from "@/components/AppNameLabel";
+import Header from "@/components/Header";
+import FilmDetailCard from "@/components/FilmDetailCard";
+import FilmCardGallery from "@/components/FilmCardGallery";
+import BaseLayout from "@/components/layout/BaseLayout";
 
-import I18N from "./config/i18n/index";
+import I18N from "@/config/i18n/index";
 import {
   MODULE_NAME,
   ACTIONS,
   STATES as DETAILS_PAGE_STATES
-} from "./store/modules/filmDetailPage/constants";
-import { publicPath } from "../vue.config";
-import { STATES, ACTIONS as CORE_ACTION } from "./store/constants";
+} from "@/store/modules/filmDetailPage/constants";
+import { STATES } from "@/store/constants";
+import { PATH, NAME } from "@/router/constants";
+import { ACTIONS as CORE_ACTION } from "@/store/constants";
 
 export default {
   name: "FilmDetailPage",
@@ -101,29 +102,34 @@ export default {
   },
   methods: {
     onFilmCardClick(movieID) {
-      this.$store
-        .dispatch(CORE_ACTION.FETCH_SELECTED_MOVIE, movieID)
-        .then(() =>
-          this.$store.dispatch(
-            MODULE_NAME + "/" + ACTIONS.SEARCH_MOVIES_BY_GENRE
-          )
-        );
+      if (this.selectedMovie.id !== movieID) {
+        this.$router.push({ path: `/movie/${movieID}` });
+      }
     },
     OnFilmGalleryLoadMoreClicked() {
       console.log("FilmDetailPage#OnFilmGalleryLoadMoreClicked");
       this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.LOAD_MORE_MOVIES);
     },
     goToMainPage() {
-      window.location.href = publicPath;
+      this.$router.push({ path: PATH.MAIN_PAGE });
     }
   },
 
   beforeMount() {
+    this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.SEARCH_MOVIES_BY_GENRE);
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    const id = to.params.id;
     this.$store
-      .dispatch(CORE_ACTION.FETCH_SELECTED_MOVIE, 443009) // temp
+      .dispatch(CORE_ACTION.FETCH_SELECTED_MOVIE, id)
       .then(() =>
         this.$store.dispatch(MODULE_NAME + "/" + ACTIONS.SEARCH_MOVIES_BY_GENRE)
-      );
+      )
+      .then(next)
+      .catch(() => {
+        next({ name: NAME.NOT_FOUND, replace: true });
+      });
   }
 };
 </script>

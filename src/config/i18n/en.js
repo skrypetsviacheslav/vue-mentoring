@@ -15,5 +15,6 @@ export default {
   [I18N_KEYS.SEARCH_BY_SECOND_OPTION_TEXT]: "Genre",
   [I18N_KEYS.LOAD_MORE_LABEL]: "Load more",
   [I18N_KEYS.YEAR]: "year",
-  [I18N_KEYS.MIN]: "min"
+  [I18N_KEYS.MIN]: "min",
+  [I18N_KEYS.NOT_FOUND]: "Not Found"
 };

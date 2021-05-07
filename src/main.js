@@ -1,6 +1,7 @@
 import Vue from "vue";
-import MainPage from "./MainPage.vue";
+import App from "./App.vue";
 import store from "./store/store";
+import router from "./router/router";
 import MovieApiService from "./core/movieApiService";
 import { install } from "./plugins/movieHelperPlugin";
 
@@ -10,6 +11,7 @@ Vue.config.productionTip = false;
 Vue.use(install);
 
 new Vue({
-  store: store,
-  render: h => h(MainPage)
+  store,
+  router,
+  render: h => h(App)
 }).$mount("#app");

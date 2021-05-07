@@ -34,7 +34,16 @@ const MovieApiService = {
       .then(res => res.data);
   },
   getById(id) {
-    return movieAxiosInstanse.get(`/movies/${id}`).then(res => res.data);
+    return movieAxiosInstanse
+      .get(`/movies/${id}`)
+      .then(res => res.data)
+      .then(data => {
+        if (Object.keys(data).length === 0) {
+          throw new Error(`No movie foumd with id:${id}`);
+        } else {
+          return data;
+        }
+      });
   }
 };
 
