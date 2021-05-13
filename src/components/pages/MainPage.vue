@@ -55,27 +55,26 @@
 </template>
 
 <script>
-import AppNameLabel from "./components/AppNameLabel";
-import Header from "./components/Header";
-import SearchBar from "./components/SearchBar";
-import FilmCardGallery from "./components/FilmCardGallery";
-import Toggle from "./components/Toggle";
-import BaseLayout from "./components/layout/BaseLayout";
+import AppNameLabel from "@/components/AppNameLabel";
+import Header from "@/components/Header";
+import SearchBar from "@/components/SearchBar";
+import FilmCardGallery from "@/components/FilmCardGallery";
+import Toggle from "@/components/Toggle";
+import BaseLayout from "@/components/layout/BaseLayout";
 
-import { publicPath } from "../vue.config";
-import I18N from "./config/i18n/index";
+import I18N from "@/config/i18n/index";
 import {
   MODULE_NAME,
   ACTIONS,
   STATES
-} from "./store/modules/mainPage/constants";
+} from "@/store/modules/mainPage/constants";
 import {
   MODULE_NAME as SEARCH_MODULE_NAME,
   MUTATIONS as SEARCH_MUTATIONS,
   SEARCH_BY_OPTIONS,
   SORT_BY_OPTIONS
-} from "./store/modules/search/constants";
-import { ACTIONS as CORE_ACTION } from "./store/constants";
+} from "@/store/modules/search/constants";
+// import { PATH } from "@/router/constants";
 
 export default {
   name: "MainPage",
@@ -149,9 +148,7 @@ export default {
     },
     onFilmCardClick(movieID) {
       console.log("MainPage#onFilmCardClick id", movieID);
-      this.$store
-        .dispatch(CORE_ACTION.FETCH_SELECTED_MOVIE, movieID) // temp solution
-        .then(() => (window.location.href = publicPath + "details"));
+      this.$router.push({ path: `/movie/${movieID}` });
     },
     OnFilmGalleryLoadMoreClicked() {
       console.log("FilmDetailPage#OnFilmGalleryLoadMoreClicked");
